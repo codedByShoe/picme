@@ -3,36 +3,33 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
+
+	"github.com/codedByShoe/picme/actions"
+	"github.com/codedByShoe/picme/html"
+	"github.com/go-chi/chi/v5"
 )
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, "<h1> Welcome to my awesome site</h1>")
-}
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, "<h1>Contact Page</h1><p>To get in touch, email me at <a href='mailto:andrew.shoemaker9@gmail.com'>Andrew Shoemaker</a></p>")
-}
-
-type Router struct{}
-
-func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		homeHandler(w, r)
-	case "/contact":
-		contactHandler(w, r)
-	default:
-		http.Error(w, "Page Not Found", http.StatusNotFound)
-
-	}
-}
-
 func main() {
-	var router Router
+	r := chi.NewRouter()
+	// Parse templates
+	tpl, err := html.Parse(filepath.Join("templates", "index.html"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/", actions.StaticHandler(tpl))
+
+	tpl, err = html.Parse(filepath.Join("templates", "contact.html"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/contact", actions.StaticHandler(tpl))
+
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Page Not Found", http.StatusNotFound)
+	})
 	fmt.Println("Starting the server on port 3000...")
-	err := http.ListenAndServe(":3000", router)
+	err = http.ListenAndServe(":3000", r)
 	if err != nil {
 		panic(err)
 	}
