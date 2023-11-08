@@ -1,0 +1,35 @@
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pic Me</title>
+</head>
+
+<body>
+
+	{{end}}
+	<!-- Page Content -->
+	{{define "footer"}}
+</body>
+
+</html>
+{{end}}
+
+{{define "navbar"}}
+<header class="bg-gradient-to-r from-slate-800 to-sky-800 shadow-lg">
+	<nav class="px-8 py-6 flex items-center text-gray-100">
+		<div class="text-4xl pr-8">Pic-Me</div>
+		<div class="flex-grow">
+			<a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/">Home</a>
+			<a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/contact">Contact</a>
+		</div>
+		<div class="space-x-3">
+			<a href="#">Sign In</a>
+			<a class="px-4 py-2 bg-sky-700 hover:bg-sky-600 rounded shadow-lg" href="/signup">Sign Up</a>
+		</div>
+	</nav>
+</header>
+{{end}}
